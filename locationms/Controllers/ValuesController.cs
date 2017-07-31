@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using Newtonsoft.Json;
 using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 
@@ -17,10 +18,17 @@ namespace locationms.Controllers
         }
 
         // GET api/values/5
-        [HttpGet("{id}")]
-        public string Get(string id)
+        [HttpGet("{ip}")]
+        public async Task<string> Get(string ip)
         {
-            return $"Location of {id} ";
+            if (string.IsNullOrEmpty(ip))
+            {
+                ip = Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            }
+
+            GeoLocation model = await GeoLocation.QueryGeographicalLocationAsync(ip);
+
+            return JsonConvert.SerializeObject(model);
         }
 
         // POST api/values
