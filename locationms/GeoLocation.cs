@@ -57,7 +57,9 @@ namespace locationms
         public static async Task<GeoLocation> QueryGeographicalLocationAsync(string ipAddress)
         {
             HttpClient client = new HttpClient();
-            string result = await client.GetStringAsync("http://freegeoip.net/json/" + ipAddress);
+            string url = "http://api.ipstack.com/" + ipAddress + "?access_key=" + Environment.GetEnvironmentVariable("ACCESS_KEY");
+            Console.WriteLine(url);
+            string result = await client.GetStringAsync(url);
 
             return JsonConvert.DeserializeObject<GeoLocation>(result);
         }
