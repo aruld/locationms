@@ -32,13 +32,9 @@ namespace locationms
 
         public string City { get; set; }
 
-        [JsonProperty("zip_code")]
+        [JsonProperty("zip")]
 
-        public string ZipCode { get; set; }
-
-        [JsonProperty("time_zone")]
-
-        public string TimeZone { get; set; }
+        public string Zip { get; set; }
 
         [JsonProperty("latitude")]
 
@@ -47,10 +43,6 @@ namespace locationms
         [JsonProperty("longitude")]
 
         public float Longitude { get; set; }
-
-        [JsonProperty("metro_code")]
-
-        public int MetroCode { get; set; }
 
         private GeoLocation() { }
 
