@@ -26,6 +26,8 @@ namespace locationms.Controllers
                 ip = Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             }
 
+            string url = "http://api.ipstack.com/" + "{ipAddress}" + "?access_key=" + Environment.GetEnvironmentVariable("ACCESS_KEY") + "&output=json";
+            Console.WriteLine(url);
             GeoLocation model = await GeoLocation.QueryGeographicalLocationAsync(ip);
 
             return JsonConvert.SerializeObject(model);
