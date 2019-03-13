@@ -7,17 +7,17 @@ using Microsoft.AspNetCore.Mvc;
 
 namespace locationms.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("/")]
     public class ValuesController : Controller
     {
-        // GET api/values
+        // GET /
         [HttpGet]
-        public IEnumerable<string> Get()
+        public string Get()
         {
-            return new string[] { "value1", "value2" };
+            return "Version 1.0";
         }
 
-        // GET api/values/5
+        // GET {/ip}
         [HttpGet("{ip}")]
         public async Task<string> Get(string ip)
         {
@@ -26,29 +26,9 @@ namespace locationms.Controllers
                 ip = Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
             }
 
-            string url = "http://api.ipstack.com/" + "{ipAddress}" + "?access_key=" + Environment.GetEnvironmentVariable("ACCESS_KEY") + "&output=json";
-            Console.WriteLine(url);
             GeoLocation model = await GeoLocation.QueryGeographicalLocationAsync(ip);
 
             return JsonConvert.SerializeObject(model);
-        }
-
-        // POST api/values
-        [HttpPost]
-        public void Post([FromBody]string value)
-        {
-        }
-
-        // PUT api/values/5
-        [HttpPut("{id}")]
-        public void Put(int id, [FromBody]string value)
-        {
-        }
-
-        // DELETE api/values/5
-        [HttpDelete("{id}")]
-        public void Delete(int id)
-        {
         }
     }
 }

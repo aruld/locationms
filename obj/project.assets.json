@@ -12966,11 +12966,11 @@
   "project": {
     "version": "1.0.0",
     "restore": {
-      "projectUniqueName": "/Users/dschenck/shared/locationms/locationms/locationms.csproj",
+      "projectUniqueName": "/Users/dschenck/src/locationms/locationms.csproj",
       "projectName": "locationms",
-      "projectPath": "/Users/dschenck/shared/locationms/locationms/locationms.csproj",
+      "projectPath": "/Users/dschenck/src/locationms/locationms.csproj",
       "packagesPath": "/Users/dschenck/.nuget/packages/",
-      "outputPath": "/Users/dschenck/shared/locationms/locationms/obj/",
+      "outputPath": "/Users/dschenck/src/locationms/obj/",
       "projectStyle": "PackageReference",
       "fallbackFolders": [
         "/usr/local/share/dotnet/sdk/NuGetFallbackFolder"
