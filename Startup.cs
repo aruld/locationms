@@ -29,7 +29,7 @@ namespace locationms
                 options.AddPolicy(MyCorsPolicy,
                 builder => {
                     builder.SetIsOriginAllowedToAllowWildcardSubdomains()
-                    .WithOrigins("http://localhost:5000")
+                    .WithOrigins("*")
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
