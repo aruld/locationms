@@ -18,7 +18,7 @@ namespace locationms
             Configuration = configuration;
         }
 
-        readonly string MyAllowSpecificOrigins = "_myAllowSpecificOrigins";
+        readonly string MyCorsPolicy = "MyCorsPolicy";
         public IConfiguration Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
@@ -26,9 +26,14 @@ namespace locationms
         {
             services.AddCors(options => 
             {
-                options.AddPolicy(MyAllowSpecificOrigins,
+                options.AddPolicy(MyCorsPolicy,
                 builder => {
-                    builder.WithOrigins("http://localhost:5000");
+                    builder.SetIsOriginAllowedToAllowWildcardSubdomains()
+                    .WithOrigins("http://localhost:5000")
+                    .AllowAnyHeader()
+                    .AllowAnyMethod()
+                    .AllowCredentials()
+                    .Build();
                 });
             });
             services.AddMvc();
