@@ -28,7 +28,7 @@ namespace locationms
             {
                 options.AddPolicy(MyAllowSpecificOrigins,
                 builder => {
-                    builder.WithOrigins("*");
+                    builder.WithOrigins("http://localhost:5000");
                 });
             });
             services.AddMvc();
