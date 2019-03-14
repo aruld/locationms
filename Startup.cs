@@ -29,7 +29,7 @@ namespace locationms
                 options.AddPolicy(MyCorsPolicy,
                 builder => {
                     builder.SetIsOriginAllowedToAllowWildcardSubdomains()
-                    .WithOrigins("*")
+                    .AllowAnyOrigin()
                     .AllowAnyHeader()
                     .AllowAnyMethod()
                     .AllowCredentials()
@@ -47,8 +47,8 @@ namespace locationms
                 app.UseDeveloperExceptionPage();
             }
 
-            app.UseMvc();
             app.UseCors(MyCorsPolicy);
+            app.UseMvc();
         }
     }
 }
