@@ -7,5 +7,6 @@ RUN dotnet restore
 
 # copy and build everything else
 COPY . ./
+EXPOSE 8080
 RUN dotnet publish -c Release -o out
 ENTRYPOINT ["dotnet", "out/locationms.dll"]
