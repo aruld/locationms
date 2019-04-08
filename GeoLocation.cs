@@ -50,6 +50,12 @@ namespace locationms
 
         [JsonProperty("as")]
         public string As { get; set; }
+        [JsonProperty("version")]
+        public string Version {
+            get {
+                return "v2";
+            }
+        }
         private GeoLocation() { }
 
         public static async Task<GeoLocation> QueryGeographicalLocationAsync(string ipAddress)

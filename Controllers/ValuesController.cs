@@ -14,7 +14,7 @@ namespace locationms.Controllers
         [HttpGet]
         public string Get()
         {
-            return "Version 1.1";
+            return "Version 2.0";
         }
 
         // GET {/ip}
