@@ -1,14 +1,9 @@
 pipeline {
-  agent {
-    dockerfile {
-      filename 'Dockerfile'
-    }
-
-  }
+  agent any
   stages {
     stage('Build') {
       steps {
-        sh 'dotnet build'
+        echo 'Build is done'
       }
     }
   }
