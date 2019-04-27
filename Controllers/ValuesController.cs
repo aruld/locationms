@@ -14,7 +14,9 @@ namespace locationms.Controllers
         [HttpGet]
         public string Get()
         {
-            return "Version 2.0";
+            string ip = Request.HttpContext.Connection.RemoteIpAddress.MapToIPv4().ToString();
+            Console.WriteLine("Your IP is {0}", ip);
+            return "Your IP is " + ip;
         }
 
         // GET {/ip}
