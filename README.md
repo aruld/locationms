@@ -7,7 +7,6 @@ Version 1.0 returns location data, plain and simple.
 
 Version 2.0 returns the location data with a "version:v2" property added to the JSON.
 
-
 #### Deploy service to local Docker on Windows
 
 ```
@@ -183,4 +182,135 @@ fbb641a8b943: Mounted from microsoft/dotnet
 latest: digest: sha256:757e072cea163b5bb1bca038f25977f6df64606ab3e618e0c09a3ab20739c351 size: 2845
 PS C:\Users\arul\Documents\GitHub\locationms>
 ```
+
+#### Pull image from Docker hub [repository](https://hub.docker.com/r/microlithdev/locationms)
+
+```
+docker pull microlithdev/locationms
+```
+
+docker run -d -p 80:8080 microlithdev/locationms
+
+## Minikube setup
+
+### Start minikube
+
+```
+PS C:\WINDOWS\system32> minikube start
+o   minikube v1.0.0 on windows (amd64)
+$   Downloading Kubernetes v1.14.0 images in the background ...
+
+!   Ignoring --vm-driver=virtualbox, as the existing "minikube" VM was created using the hyperv driver.
+!   To switch drivers, you may create a new VM using `minikube start -p <name> --vm-driver=virtualbox`
+!   Alternatively, you may delete the existing VM using `minikube delete -p minikube`
+
+:   Restarting existing hyperv VM for "minikube" ...
+:   Waiting for SSH access ...
+-   "minikube" IP address is 192.168.29.121
+-   Configuring Docker as the container runtime ...
+-   Version of container runtime is 18.06.2-ce
+:   Waiting for image downloads to complete ...
+-   Preparing Kubernetes environment ...
+-   Pulling images required by Kubernetes v1.14.0 ...
+:   Relaunching Kubernetes v1.14.0 using kubeadm ...
+:   Waiting for pods: apiserver proxy etcd scheduler controller dns
+:   Updating kube-proxy configuration ...
+-   Verifying component health ......
++   kubectl is now configured to use "minikube"
+=   Done! Thank you for using minikube!
+```
+
+### Start minikube dashboard
+
+```
+PS C:\WINDOWS\system32> minikube dashboard
+-   Enabling dashboard ...
+-   Verifying dashboard health ...
+-   Launching proxy ...
+-   Verifying proxy health ...
+-   Opening http://127.0.0.1:54758/api/v1/namespaces/kube-system/services/http:kubernetes-dashboard:/proxy/ in your default browser...
+```
+
+
+
+### Run image in kubernetes cluster via minikube
+
+```
+PS C:\Users\arul\Documents\GitHub\locationms> kubectl run locationms-dockerhub --image=microlithdev/locationms --port=8080
+deployment.apps "locationms-dockerhub" created
+```
+
+### kubectl get pods
+
+```
+PS C:\Users\arul\Documents\GitHub\locationms> kubectl get pods
+NAME                                    READY     STATUS              RESTARTS   AGE
+locationms-c4b695c96-4kgtp              1/1       Running             3          6d
+locationms-dockerhub-846c7ccd87-hrqfz   0/1       ContainerCreating   0          4s
+PS C:\Users\arul\Documents\GitHub\locationms> kubectl get pods
+NAME                                    READY     STATUS             RESTARTS   AGE
+locationms-c4b695c96-4kgtp              1/1       Running            3          6d
+locationms-dockerhub-846c7ccd87-hrqfz   0/1       ImagePullBackOff   0          52s
+PS C:\Users\arul\Documents\GitHub\locationms> kubectl get pods
+NAME                                    READY     STATUS    RESTARTS   AGE
+locationms-c4b695c96-4kgtp              1/1       Running   3          6d
+locationms-dockerhub-846c7ccd87-hrqfz   1/1       Running   0          9m
+```
+
+### kubectl proxy
+
+```
+PS C:\WINDOWS\system32> kubectl proxy
+Starting to serve on 127.0.0.1:8001
+```
+
+### Accessing the micro service via proxy
+
+```
+PS C:\Users\arul\Documents\GitHub\locationms> curl http://localhost:8001/api/v1/namespaces/default/pods/locationms-dockerhub-846c7ccd87-hrqfz/proxy/
+
+
+StatusCode        : 200
+StatusDescription : OK
+Content           : Your IP is 172.17.0.1
+RawContent        : HTTP/1.1 200 OK
+                    Content-Length: 21
+                    Content-Type: text/plain; charset=utf-8
+                    Date: Sun, 28 Apr 2019 18:05:20 GMT
+                    Server: Kestrel
+
+                    Your IP is 172.17.0.1
+Forms             : {}
+Headers           : {[Content-Length, 21], [Content-Type, text/plain; charset=utf-8], [Date, Sun, 28 Apr 2019 18:05:20 GMT], [Server, Kestrel]}
+Images            : {}
+InputFields       : {}
+Links             : {}
+ParsedHtml        : System.__ComObject
+RawContentLength  : 21
+```
+
+
+```
+PS C:\Users\arul\Documents\GitHub\locationms> $(curl http://localhost:8001/api/v1/namespaces/default/pods/locationms-dockerhub-846c7ccd87-hrqfz/proxy/104.244.42.193).content | ConvertFrom-Json
+
+
+query       : 104.244.42.193
+status      : success
+country     : United States
+countryCode : US
+region      : CA
+regionName  : California
+city        : San Francisco
+zip         : 94103
+lat         : 37.7768
+lon         : -122.416
+timezone    : America/Los_Angeles
+isp         : Twitter Inc.
+org         : Twitter Inc.
+as          : AS13414 Twitter Inc.
+version     : v2
+
+```
+
+Setup instructions for running it via minishift can be found [here](https://developers.redhat.com/blog/2019/04/15/how-to-set-up-your-first-kubernetes-environment-on-windows/)
 
